@@ -1,4 +1,5 @@
-name: Generate Docs
+name: Github Pages Deploy Docs
+# Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events to src path
   push:
@@ -6,23 +7,26 @@ on:
       - "src/**"
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   build:
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Build
+      - name: Install and Build
         run: |
           python -m pip install --upgrade pip
-          pip install pdoc3
-          rm -rf ./docs
-          pdoc3 --html ./src/tmux_styler -o ./docs --force
+          pip install pdoc
+          rm -rf docs/
+          pdoc src/tmux_styler -o docs -t ./template
       - name: Upload Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-pages-artifact@v2
         with:
           name: github-pages
-          path: docs/tmux_styler
+          path: docs
   deploy:
     # Add a dependency to the build job
     needs: build
