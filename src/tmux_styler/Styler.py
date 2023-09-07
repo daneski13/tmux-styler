@@ -92,13 +92,13 @@ class Styler:
     pane_border_content: str | ContextVar | List[ContextVar | str] = [
         ContextVar.PANE_INDEX, " ", ContextVar.PANE_CURRENT_COMMAND]
     """
-    Pane border content. Defaults to [ContextVar.PANE_INDEX, " ", ContextVar.PANE_CURRENT_COMMAND]
-    Which will display the pane index, a space, and the currently running command e.g. "1 nvim".
+    Pane border content. Defaults to `[ContextVar.PANE_INDEX, " ", ContextVar.PANE_CURRENT_COMMAND]`,
+    which will display the pane index, a space, and the currently running command e.g. "1 nvim".
     """
 
     current_command_max_depth: int = 1
     """
-    Whenever ContextVar.PANE_CURRENT_COMMAND is used, this is the maximum depth to search for the
+    Whenever `ContextVar.PANE_CURRENT_COMMAND` is used, this is the maximum depth to search for the
     currently running command in the process tree. Defaults to 1.
 
     Useful to change when you are commonly running processes/commands that spawn other processes
@@ -120,9 +120,9 @@ class Styler:
 
     current_command_glyphs: Dict[str, str] | None = None
     """
-    Add or change glyphs for ContextVar.PANE_CURRENT_COMMAND. Common processes are already included by default.
+    Add or change glyphs for `ContextVar.PANE_CURRENT_COMMAND`. Common processes are already included by default.
     common editors (vim/neovim, emacs), common language interpreters/runtimes/compilers (clang/gcc, python, 
-    node, rust, go, etc.), common tools (git, less, docker), shells (bash, zsh, fish, etc.) and more.
+    node, rust, go, etc.), common tools (git, less, docker), shells (bash, zsh, fish, etc.) and many more.
 
     If you want to add a glyph for a process or change a default, pass a dictionary mapping process names to glyphs.
 

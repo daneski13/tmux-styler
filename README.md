@@ -9,6 +9,15 @@ Why use python you might ask?
 * Leverage the existing python package ecosystem to create powerful new segments
 * Write a config file with an API, has type hints and documentation rather than digging through the tmux man pages
 
+## Table of Contents <!-- omit from toc -->
+- [Features](#features)
+- [Requirments](#requirments)
+- [Installation](#installation)
+- [Configuration](#configuration)
+  - [Configuration File](#configuration-file)
+  - [Custom Segments](#custom-segments)
+- [Contributing](#contributing)
+
 ## Features
 
 - [x] Customizable and hackable [Powerline](https://github.com/powerline/powerline) inspired status bar. Inspired by [tmux-powerline](https://github.com/erikw/tmux-powerline).
@@ -57,16 +66,73 @@ Navigate to the directory you chose and open the file in your favorite editor.
 
 The configuration file is a python file that is executed by tmux-styler. You will notice that it first instantiates a `Styler` object.
 
-See the documentation for the `Styler` class for more information on the available class variables.
+```python
+styler = Styler()
+```
 
-Next we build the segments for the Window List, the defaults are most likely fine, but feel free to change the colors. See the documentation for the `Segment` class for more information and the `Colors` class for the available colors.
+See the documentation for the [`Styler`](https://daneski13.github.io/tmux-styler/tmux_styler/Styler.html#Styler) class for more information on the available class variables.
 
-We build segments for the left and right side of the status bar. The order of the segments is important, as they will be displayed in the order they are added. The first segment will be the leftmost segment and the last segment will be the rightmost segment.
+Next we build the segments for the Window List, the default is most likely fine (advanced users checkout [window_info](./src/tmux_styler/Statusbar/Segments/TmuxInfo.py)), but feel free to change the colors. See the documentation for the [`Segment`](https://daneski13.github.io/tmux-styler/tmux_styler/Statusbar/Segment.html#Segment) class and [Colors](https://daneski13.github.io/tmux-styler/tmux_styler/Colors.html) for more information on building segments.
 
-Now you can pass the segments into the `Statusbar` object within the `Styler` object. See the documentation for the `Statusbar` class for more advanced options and information.
+The active window list segment is the segment that is displayed when the window is active, the inactive window list segment is the segment that is displayed when the window is inactive.
 
-Finally, calls `styler.style()` to apply the configuration.
+```python
+# Window list
+active = Segment(SegmentType.FUNCTION, "window_info",
+               NamedColor.WHITE, NamedColor.BLACK)
+inactive = Segment(SegmentType.FUNCTION, "window_info",
+                  HexColor("#555555"), NamedColor.WHITE)
+window_list = WindowList(active, inactive)
+```
 
+Then, we build segments for the left and right side of the status bar. The order of the segments is important, as they will be displayed in the order they are added. The first segment will be the leftmost segment and the last segment will be the rightmost segment.
+
+See the sub-modules of [Statusbar Segments](https://daneski13.github.io/tmux-styler/tmux_styler/Statusbar/Segments.html) for the built-in segments. The built-in segments can be used simply by specifying the function name as a string. For example, the `session_name` segment can be used by specifying `"session_name"` as the function name.
+
+```python
+# Left side
+left_side = [
+   Segment(SegmentType.FUNCTION, "session_name",
+            Color256(220), Color256(234), style=Style(attrs=[TextAttributes.BOLD])),
+]
+# Right side
+right_side = [
+   Segment(SegmentType.FUNCTION, "cwd", Color256(105), Color256(
+      233)),
+   Segment(SegmentType.FUNCTION, "date_day", separator=""),
+   Segment(SegmentType.FUNCTION, "date", separator="|"),
+   Segment(SegmentType.FUNCTION, "time", separator="|"),
+]
+```
+
+Now the segments and `WindowList` are passed into the `Statusbar` object within the `Styler` object. See the documentation for the [`Statusbar`](https://daneski13.github.io/tmux-styler/tmux_styler/Statusbar/Statusbar.html#Statusbar) class for more advanced options and information.
+
+```python
+# Statusbar
+styler.status_bar = Statusbar(left_side, right_side, window_list)
+```
+
+Note the line:
+
+```python
+styler.status_bar.segment_data = {
+   "cwd": {
+      "max_length": 35,
+   }
+}
+```
+This is an example of how to pass arguments to a segment. In this case, the segment that uses `cwd` as its content will be passed the value of 35 for its `max_length` argument. See the documentation for the [`Segment`](https://daneski13.github.io/tmux-styler/tmux_styler/Statusbar/Segment.html#Segment) class for more information on the available arguments for each segment.
+
+
+Finally, the segment separators are defined and `styler.style()` is called to apply the configuration:
+
+```python
+styler.status_bar.segment_separator = Separators.ORIGINAL
+styler.status_bar.left_end_separator = Separators.PIXEL_SQUARES
+styler.status_bar.right_end_separator = Separators.PIXEL_SQUARES
+
+styler.style()
+```
 ### Custom Segments
 
 You can create a segment that displays a string of your choice by creating a `Segment` object and adding it to the `left_segments` or `right_segments` list in your configuration file.
@@ -95,7 +161,7 @@ def current_time(format="%H:%M") -> DefinedSegment:
     return current_date.strftime(format)
 ```
 
-Now we can add this segment to our status bar by adding it to the `left_segments` or `right_segments` list in our configuration file.
+Now we can add this segment to our status bar by adding it to the `left_segments` or `right_segments` list in our configuration file using the format "\<module name\>.\<function name\>" for our Segment content.
 
 ```python
 left_side = [
@@ -103,6 +169,8 @@ left_side = [
    Segment(SegmentType.FUNCTION, "time.current_time", <Some Background Color>, <Some Foreground Color>)
 ]
 ```
+
+Notice how our segment could take in an argument for the format, we can pass this argument to the segment by adding it to the `segment_data` dictionary in our configuration file.
 
 ## Contributing
 
