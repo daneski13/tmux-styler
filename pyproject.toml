@@ -14,7 +14,7 @@ classifiers = [
   "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent",
 ]
-dependencies = ["inquirer", "psutil"]
+dependencies = ["inquirer", "psutil", "toml"]
 
 [project.scripts]
 tmux-styler = "tmux_styler._CLI.main:main"
