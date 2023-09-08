@@ -11,6 +11,7 @@ Why use python you might ask?
 
 ## Table of Contents <!-- omit from toc -->
 - [Features](#features)
+- [Screenshots](#screenshots)
 - [Requirments](#requirments)
 - [Installation](#installation)
 - [Configuration](#configuration)
@@ -25,6 +26,10 @@ Why use python you might ask?
 - [x] Documented Python API for interacting with tmux settings, styling options, and creating segments.
 - [x] Customizable pane style.
 - [x] Glyphize current running command.
+
+## Screenshots
+
+![Full bar](./screenshots/full.png)
 
 ## Requirments
 
