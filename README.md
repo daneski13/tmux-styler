@@ -4,15 +4,17 @@ A hackable way to style tmux. Tmux Styler is a tmux [tpm](https://github.com/tmu
 plugin and python library that provides an easy and intuitive way to RICE your
 tmux setup.
 
-Why use python you might ask? 
-* Bash is really annoying 
-* Leverage the existing python package ecosystem to create powerful new segments
-* Write a config file with an API, has type hints and documentation rather than digging through the tmux man pages
+Why use python you might ask?
+
+- Bash is really annoying
+- Leverage the existing python package ecosystem to create powerful new segments
+- Write a config file with an API, has type hints and documentation rather than digging through the tmux man pages
 
 ## Table of Contents <!-- omit from toc -->
+
 - [Features](#features)
 - [Screenshots](#screenshots)
-- [Requirments](#requirments)
+- [Requirements](#requirements)
 - [Installation](#installation)
 - [Configuration](#configuration)
   - [Configuration File](#configuration-file)
@@ -23,15 +25,23 @@ Why use python you might ask?
 
 - [x] Customizable and hackable [Powerline](https://github.com/powerline/powerline) inspired status bar. Inspired by [tmux-powerline](https://github.com/erikw/tmux-powerline).
   - [x] Includes segments for common use cases and/or write your own in Python.
-- [x] Documented Python API for interacting with tmux settings, styling options, and creating segments.
+  - [x] Segments can take arguments.
+- [x] Documented Python API for interacting with tmux settings, styling options, and creating segments. Let your IDE do the work for you.
 - [x] Customizable pane style.
 - [x] Glyphize current running command.
+- [x] A single configuration file for all your tmux styling needs, share your configuration with others!
 
 ## Screenshots
 
-![Full bar](./screenshots/full.png)
+Default status bar configuration:
 
-## Requirments
+![Full Status Bar](./screenshots/statusbar.png)
+
+tmux session with several windows and panes:
+
+![tmux session](./screenshots/tmux-session.png)
+
+## Requirements
 
 - Python 3.10+
 - bash 3.2+
@@ -41,7 +51,7 @@ Why use python you might ask?
 ## Installation
 
 1. Install [tpm](https://github.com/tmux-plugins/tpm) and make sure it's working.
-2. Install tmux-powerline as a plugin by adding a line to `tmux.conf`:
+2. Install tmux-styler as a plugin by adding a line to `tmux.conf`:
 
    ```conf
     set -g @plugin 'daneski13/tmux-styler'
@@ -68,6 +78,8 @@ will be the same directory that the tool will use to search for your custom segm
 Navigate to the directory you chose and open the file in your favorite editor.
 
 ### Configuration File
+
+> **Note:** You will likely have to reload tmux for the changes to take effect. You can do this with \<prefix\>I assuming default tpm keybindings.
 
 The configuration file is a python file that is executed by tmux-styler. You will notice that it first instantiates a `Styler` object.
 
@@ -126,8 +138,8 @@ styler.status_bar.segment_data = {
    }
 }
 ```
-This is an example of how to pass arguments to a segment. In this case, the segment that uses `cwd` as its content will be passed the value of 35 for its `max_length` argument. See the documentation for the [`Segment`](https://daneski13.github.io/tmux-styler/tmux_styler/Statusbar/Segment.html#Segment) class for more information on the available arguments for each segment.
 
+This is an example of how to pass arguments to a segment. In this case, the segment that uses `cwd` as its content will be passed the value of 35 for its `max_length` argument. See the documentation for the [`Segment`](https://daneski13.github.io/tmux-styler/tmux_styler/Statusbar/Segment.html#Segment) class for more information on the available arguments for each segment.
 
 Finally, the segment separators are defined and `styler.style()` is called to apply the configuration:
 
@@ -138,6 +150,7 @@ styler.status_bar.right_end_separator = Separators.PIXEL_SQUARES
 
 styler.style()
 ```
+
 ### Custom Segments
 
 You can create a segment that displays a string of your choice by creating a `Segment` object and adding it to the `left_segments` or `right_segments` list in your configuration file.
