@@ -3,6 +3,8 @@ name: Github Pages Deploy Docs
 on:
   # Triggers the workflow on push or pull request events to src path
   push:
+    branches:
+      - main
     paths:
       - "src/**"
   # Allows you to run this workflow manually from the Actions tab
