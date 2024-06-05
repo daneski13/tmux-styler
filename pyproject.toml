@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tmux_styler"
-version = "1.0.0"
+version = "1.0.1"
 authors = [{ name = "daneski13", email = "daneski13@gmail.com" }]
 description = "Local package and CLI for tmux-styler"
 readme = "readme.md"

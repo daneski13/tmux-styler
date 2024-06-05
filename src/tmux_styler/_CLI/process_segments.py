@@ -26,7 +26,7 @@ def __depickle_statusbar() -> Statusbar:
 statusbar = __depickle_statusbar()
 
 
-def __get_segment_content(segment: Segment) -> str:
+def __get_segment_content(segment: Segment) -> str | None:
     """
     Returns the content of the segment.
     """
@@ -47,7 +47,7 @@ def __get_segment_content(segment: Segment) -> str:
         else:
             # Skip when the segment is not a default segment
             if segment.content not in DEFAULT_SEGMENTS:
-                return ""
+                return None
 
             # Import the module from .Statusbar.Segments.{module name}
             module = importlib.import_module(
@@ -130,7 +130,7 @@ def process_left_right_segments(left_side: bool, active_flag: bool):
     for idx, segment in enumerate(segments):
         # Get the content of the segment, skip if empty
         content = __get_segment_content(segment)
-        if content == "":
+        if content == None:
             continue
 
         if left_side:

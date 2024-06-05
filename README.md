@@ -79,7 +79,8 @@ Navigate to the directory you chose and open the file in your favorite editor.
 
 ### Configuration File
 
-> **Note:** You will likely have to reload tmux for the changes to take effect. You can do this with \<prefix\>I assuming default tpm keybindings.
+> [!NOTE]
+> You will likely have to reload tmux for the changes to take effect. You can do this with \<prefix\>I assuming default tpm keybindings.
 
 The configuration file is a python file that is executed by tmux-styler. You will notice that it first instantiates a `Styler` object.
 
